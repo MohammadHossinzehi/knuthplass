@@ -1,0 +1,18 @@
+{
+  "name": "knuthplass",
+  "version": "1.0.0",
+  "description": "Optimal paragraph line breaking (Knuth Plass) with Liang hyphenation and a pattern learner, zero dependencies.",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": "./src/index.js",
+  "bin": { "knuthplass": "bin/knuthplass.js" },
+  "scripts": {
+    "test": "node --test",
+    "patterns": "node scripts/build-patterns.js",
+    "demo": "node scripts/serve.js",
+    "sample": "node bin/knuthplass.js data/sample.txt --width 48 --stats"
+  },
+  "engines": { "node": ">=18" },
+  "keywords": ["typesetting", "line-breaking", "knuth-plass", "hyphenation", "liang", "tex", "justification"],
+  "license": "MIT"
+}
