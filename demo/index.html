@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knuth Plass vs greedy line breaking</title>
+<style>
+  :root { --bg: #f7f5f0; --panel: #fff; --ink: #1d1d1f; --muted: #6b6b70; --line: #e4e0d8; --tight: #2f6fd6; --loose: #d64a2f; --accent: #3a7d44; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, sans-serif; }
+  header { padding: 24px 24px 8px; max-width: 1400px; margin: 0 auto; }
+  h1 { margin: 0 0 4px; font-size: 22px; }
+  header p { margin: 0; color: var(--muted); }
+  .controls { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: end; padding: 14px 24px; max-width: 1400px; margin: 0 auto; }
+  .controls label { display: flex; flex-direction: column; font-size: 12px; color: var(--muted); gap: 4px; }
+  .controls output { color: var(--ink); font-variant-numeric: tabular-nums; }
+  textarea { width: 100%; min-height: 110px; font: 14px/1.4 Georgia, serif; padding: 10px; border: 1px solid var(--line); border-radius: 8px; }
+  .text { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+  main { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; padding: 20px 24px 40px; max-width: 1400px; margin: 0 auto; }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px 18px; overflow-x: auto; }
+  section h2 { font-size: 15px; margin: 0 0 2px; }
+  .stats { font-size: 12px; color: var(--muted); margin-bottom: 14px; font-variant-numeric: tabular-nums; }
+  .stats b { color: var(--ink); font-weight: 600; }
+  .para { position: relative; font-family: Georgia, 'Times New Roman', serif; }
+  .line { position: absolute; left: 0; white-space: pre; }
+  .bar { position: absolute; width: 4px; border-radius: 2px; }
+  .ratio { position: absolute; font: 11px/1 ui-monospace, monospace; color: var(--muted); }
+  .margin { position: absolute; top: 0; bottom: 0; border-left: 1px dashed var(--line); }
+  .legend { font-size: 12px; color: var(--muted); display: flex; gap: 14px; align-items: center; }
+  .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: -1px; margin-right: 4px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Optimal line breaking, side by side</h1>
+  <p>The same text set by a first fit (greedy) breaker and by the Knuth Plass total fit algorithm. The bar beside each line shows how much its spaces were squeezed (blue) or stretched (red).</p>
+</header>
+<div class="text"><textarea id="text" spellcheck="false"></textarea></div>
+<div class="controls">
+  <label>Line width <output id="widthOut"></output><input id="width" type="range" min="180" max="640" value="360"></label>
+  <label>Font size <output id="sizeOut"></output><input id="size" type="range" min="12" max="26" value="17"></label>
+  <label>Tolerance <output id="tolOut"></output><input id="tol" type="range" min="0.5" max="10" step="0.1" value="2"></label>
+  <label>Looseness <input id="loose" type="number" min="-3" max="3" value="0" style="width:60px"></label>
+  <label>Alignment <select id="align"><option value="justify">Justified</option><option value="left">Ragged right</option><option value="center">Centred</option></select></label>
+  <label><span><input id="hyph" type="checkbox" checked> Hyphenation</span></label>
+  <label><span><input id="showRatio" type="checkbox" checked> Show ratios</span></label>
+  <div class="legend"><span><i class="sw" style="background:var(--tight)"></i>shrunk</span><span><i class="sw" style="background:#ccc"></i>ideal</span><span><i class="sw" style="background:var(--loose)"></i>stretched</span></div>
+</div>
+<main>
+  <section><h2>Greedy (first fit)</h2><div class="stats" id="greedyStats"></div><div class="para" id="greedy"></div></section>
+  <section><h2>Knuth Plass (total fit)</h2><div class="stats" id="kpStats"></div><div class="para" id="kp"></div></section>
+</main>
+<script type="module" src="./demo.js"></script>
+</body>
+</html>
